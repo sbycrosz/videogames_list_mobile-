@@ -9,11 +9,13 @@ NativeTachyons.build(
     colors: {
       palette: {
         primary: "#3FB6B2",
-        textPrimary: "#072340",
-        textSecondary: "#666666",
-        borderPrimary: "#D8D8D8"
-      }
-    }
+        accent: "#6DC849",
+        textPrimary: "#FFFFFF",
+        textSecondary: "#AAAAAA",
+        background: "#000000",
+        backgroundCard: "#202020",
+      },
+    },
   },
   StyleSheet
 );
