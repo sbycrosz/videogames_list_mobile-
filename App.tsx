@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import NativeTachyons from "react-native-style-tachyons";
 
-import App from "./src";
+import App from "./src/GameList";
 
 NativeTachyons.build(
   {
