@@ -5,6 +5,8 @@ import { FlatList, SafeAreaView, Modal } from "react-native";
 import { styles as s } from "react-native-style-tachyons";
 import useSWRInfinite from "swr/infinite";
 
+import GenericError from "../commons/GenericError";
+import GenericLoader from "../commons/GenericLoader";
 import GameDetails from "../GameDetails";
 import { RAWG_API_BASE_URL, RAWG_API_KEY } from "../constants";
 import { Game } from "../types";
@@ -66,13 +68,19 @@ export default function GameList() {
 
   return (
     <SafeAreaView style={[s.bg_background, s.flx_i]}>
-      <FlatList
-        keyExtractor={(item: Game) => item.name}
-        data={games}
-        renderItem={renderItem}
-        onEndReached={() => setSize(size + 1)}
-        ListFooterComponent={isValidating ? <LoadingView /> : null}
-      />
+      {error && <GenericError errorMessage={error.message} />}
+
+      {!error && !data && <GenericLoader />}
+
+      {!error && data && (
+        <FlatList
+          keyExtractor={(item: Game) => item.name}
+          data={games}
+          renderItem={renderItem}
+          onEndReached={() => setSize(size + 1)}
+          ListFooterComponent={isValidating ? <LoadingView /> : null}
+        />
+      )}
 
       {/* 
         Using modal instead of a proper navigation library here for simplicity
