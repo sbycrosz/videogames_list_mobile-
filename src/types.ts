@@ -5,3 +5,5 @@ export type Game = {
   released: string;
   metacritic: number | null;
 };
+
+export type GameDetails = {};

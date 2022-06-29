@@ -1,56 +1,67 @@
 import { flatMap } from "lodash";
 import moment from "moment";
-import { useCallback, useMemo } from "react";
-import { FlatList, SafeAreaView } from "react-native";
+import { useCallback, useMemo, useState } from "react";
+import { FlatList, SafeAreaView, Modal } from "react-native";
 import { styles as s } from "react-native-style-tachyons";
 import useSWRInfinite from "swr/infinite";
 
 import GameCard from "./GameCard";
 import LoadingView from "./LoadingView";
 import { Game } from "../types";
-import { fetcher } from "../utilities";
-
-const PAGE_SIZE = 20;
-const END_DATE = moment().format("YYYY-MM-DD");
-const START_DATE = moment().subtract(1, "year").format("YYYY-MM-DD");
-
-// Move this to env variable
-const RAWG_API_KEY = "61b1a8a3b8b14d89bc683cb1b7e0fdfb";
+import { fetcher, makeQueryString } from "../utilities";
+import GameDetails from "../GameDetails";
+import { RAWG_API_KEY } from "../config";
 
 export default function GameList() {
-  // Pagination with SWR is kind of comfy :)
+  const PAGE_SIZE = 20;
+  const END_DATE = moment().format("YYYY-MM-DD");
+  const START_DATE = moment().subtract(1, "year").format("YYYY-MM-DD");
+
+  // Pagination with SWR is super comfy :)
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
     (index, previousPageData) => {
+      // No next page, because we are at the last page!
       if (previousPageData && !previousPageData.next) return null;
-      if (index > 0) return previousPageData.next;
 
-      return [
-        "https://api.rawg.io/api/games",
-        "?page=1",
-        `&page_size=${PAGE_SIZE}`,
-        `&dates=${START_DATE},${END_DATE}`,
-        `&key=${RAWG_API_KEY}`,
-        // Sort by released descending
-        "&platforms=187",
-        // Playstation 5 platform
-        "&ordering=-released",
-      ].join("");
+      // Initial page
+      if (index === 0) {
+        return `https://api.rawg.io/api/games?${makeQueryString({
+          page: 1,
+          pageSize: PAGE_SIZE,
+          dates: `${START_DATE},${END_DATE}`,
+          key: RAWG_API_KEY,
+          platforms: 187,
+          ordering: "-released",
+        })}`;
+      }
+
+      // Else load the next page
+      return previousPageData.next;
     },
     fetcher
   );
-
   const games = useMemo(() => (data ? flatMap(data, "results") : []), [data]);
 
-  const renderItem = useCallback(({ item }: { item: Game }) => {
-    return (
-      <GameCard
-        name={item.name}
-        backgroundImage={item.background_image}
-        metacritic={item.metacritic}
-        released={item.released}
-      />
-    );
-  }, []);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [displayedGameId, setDisplayedGameId] = useState<number | undefined>();
+
+  const renderItem = useCallback(
+    ({ item }: { item: Game }) => {
+      return (
+        <GameCard
+          name={item.name}
+          backgroundImage={item.background_image}
+          metacritic={item.metacritic}
+          released={item.released}
+          onPress={() => {
+            setDisplayedGameId(item.id);
+            setModalVisible(true);
+          }}
+        />
+      );
+    },
+    [setDisplayedGameId, setModalVisible]
+  );
 
   return (
     <SafeAreaView style={[s.bg_background, s.flx_i]}>
@@ -61,6 +72,16 @@ export default function GameList() {
         onEndReached={() => setSize(size + 1)}
         ListFooterComponent={isValidating ? <LoadingView /> : null}
       />
+
+      {/* Adding navigation library takes time so here it is */}
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+        {!!displayedGameId && (
+          <GameDetails
+            gameId={displayedGameId}
+            onDismiss={() => setModalVisible(false)}
+          />
+        )}
+      </Modal>
     </SafeAreaView>
   );
 }
