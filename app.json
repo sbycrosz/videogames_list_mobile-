@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "cake-masternode",
-    "slug": "cake-masternode",
+    "name": "games-db",
+    "slug": "games-db",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

@@ -25,7 +25,7 @@ export default function GameCard(props: Props) {
         ]}
       >
         <Image
-          style={{ height: 180 }}
+          style={[s.h5]}
           source={{
             uri: backgroundImage,
           }}

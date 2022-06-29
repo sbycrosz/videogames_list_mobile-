@@ -11,19 +11,15 @@ import RenderHtml from "react-native-render-html";
 import { styles as s } from "react-native-style-tachyons";
 
 import DetailsEntry from "./DetailsEntry";
+import { HTML_STYLES } from "../constants";
 
 type Props = {
   gameDetails: any;
 };
 
-const tagsStyles = {
-  body: {
-    color: "#AAAAAA",
-  },
-};
-
 export default function GameDetailsContent(props: Props) {
   const { width: windowWidth } = useWindowDimensions();
+  const detailsEntryWidth = windowWidth / 2.0;
 
   const { gameDetails } = props;
 
@@ -32,7 +28,7 @@ export default function GameDetailsContent(props: Props) {
   return (
     <ScrollView contentContainerStyle={[s.pb5]}>
       <Image
-        style={{ height: 280 }}
+        style={[s.h5]}
         source={{
           uri: gameDetails.background_image,
         }}
@@ -46,32 +42,37 @@ export default function GameDetailsContent(props: Props) {
         <RenderHtml
           contentWidth={windowWidth}
           source={{ html: gameDetails.description }}
-          tagsStyles={tagsStyles}
+          tagsStyles={HTML_STYLES}
         />
       </View>
 
       <View style={[s.flx_row, s.flx_wrap]}>
         <DetailsEntry
+          width={detailsEntryWidth}
           label={"Platform"}
           value={_.map(gameDetails.platforms, "platform.name").join(", ")}
         />
 
         <DetailsEntry
+          width={detailsEntryWidth}
           label={"Genre"}
           value={_.map(gameDetails.genres, "name").join(", ")}
         />
 
         <DetailsEntry
+          width={detailsEntryWidth}
           label={"Release Date"}
           value={moment(gameDetails.released).format("MMM DD, YYYY")}
         />
 
         <DetailsEntry
+          width={detailsEntryWidth}
           label={"Developers"}
           value={_.map(gameDetails.developers, "name").join(", ")}
         />
 
         <DetailsEntry
+          width={detailsEntryWidth}
           label={"Publishers"}
           value={_.map(gameDetails.publishers, "name").join(", ")}
         />

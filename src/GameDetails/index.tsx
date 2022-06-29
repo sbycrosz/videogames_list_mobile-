@@ -4,7 +4,7 @@ import { styles as s } from "react-native-style-tachyons";
 import useSWR from "swr";
 
 import { fetcher } from "../utilities";
-import { RAWG_API_KEY } from "../config";
+import { RAWG_API_BASE_URL, RAWG_API_KEY } from "../constants";
 import GameDetailsContent from "./GameDetailsContent";
 
 type Props = {
@@ -16,7 +16,7 @@ export default function GameDetails(props: Props) {
   const { gameId, onDismiss } = props;
 
   const { data, error } = useSWR(
-    `https://api.rawg.io/api/games/${gameId}?key=${RAWG_API_KEY}`,
+    `${RAWG_API_BASE_URL}/api/games/${gameId}?key=${RAWG_API_KEY}`,
     fetcher
   );
 

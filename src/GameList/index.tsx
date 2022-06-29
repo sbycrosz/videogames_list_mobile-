@@ -5,12 +5,12 @@ import { FlatList, SafeAreaView, Modal } from "react-native";
 import { styles as s } from "react-native-style-tachyons";
 import useSWRInfinite from "swr/infinite";
 
-import GameCard from "./GameCard";
-import LoadingView from "./LoadingView";
+import GameDetails from "../GameDetails";
+import { RAWG_API_BASE_URL, RAWG_API_KEY } from "../constants";
 import { Game } from "../types";
 import { fetcher, makeQueryString } from "../utilities";
-import GameDetails from "../GameDetails";
-import { RAWG_API_KEY } from "../config";
+import GameCard from "./GameCard";
+import LoadingView from "./LoadingView";
 
 export default function GameList() {
   const PAGE_SIZE = 20;
@@ -25,7 +25,7 @@ export default function GameList() {
 
       // Initial page
       if (index === 0) {
-        return `https://api.rawg.io/api/games?${makeQueryString({
+        return `${RAWG_API_BASE_URL}/api/games?${makeQueryString({
           page: 1,
           pageSize: PAGE_SIZE,
           dates: `${START_DATE},${END_DATE}`,
@@ -40,6 +40,7 @@ export default function GameList() {
     },
     fetcher
   );
+
   const games = useMemo(() => (data ? flatMap(data, "results") : []), [data]);
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -73,7 +74,12 @@ export default function GameList() {
         ListFooterComponent={isValidating ? <LoadingView /> : null}
       />
 
-      {/* Adding navigation library takes time so here it is */}
+      {/* 
+        Using modal instead of a proper navigation library here for simplicity
+        On production app, we would probably want proper navigation library so we 
+        implement more complex navigation
+        e.g. GameList -> GameDetails -> Similar game -> GameDetails
+      */}
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         {!!displayedGameId && (
           <GameDetails
