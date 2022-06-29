@@ -11,37 +11,36 @@ import RenderHtml from "react-native-render-html";
 import { styles as s } from "react-native-style-tachyons";
 
 import DetailsEntry from "./DetailsEntry";
+import { GameInformation } from "../types";
 import { HTML_STYLES } from "../constants";
 
 type Props = {
-  gameDetails: any;
+  data: GameInformation;
 };
 
 export default function GameDetailsContent(props: Props) {
   const { width: windowWidth } = useWindowDimensions();
   const detailsEntryWidth = windowWidth / 2.0;
 
-  const { gameDetails } = props;
+  const { data } = props;
 
-  if (!gameDetails) return null;
+  if (!data) return null;
 
   return (
     <ScrollView contentContainerStyle={[s.pb5]}>
       <Image
         style={[s.h5]}
         source={{
-          uri: gameDetails.background_image,
+          uri: data.backgroundImage,
         }}
       />
 
-      <Text style={[s.textPrimary, s.b, s.f4, s.mh3, s.mt3]}>
-        {gameDetails.name}
-      </Text>
+      <Text style={[s.textPrimary, s.b, s.f4, s.mh3, s.mt3]}>{data.name}</Text>
 
       <View style={[s.mh3]}>
         <RenderHtml
           contentWidth={windowWidth}
-          source={{ html: gameDetails.description }}
+          source={{ html: data.description }}
           tagsStyles={HTML_STYLES}
         />
       </View>
@@ -50,31 +49,31 @@ export default function GameDetailsContent(props: Props) {
         <DetailsEntry
           width={detailsEntryWidth}
           label={"Platform"}
-          value={_.map(gameDetails.platforms, "platform.name").join(", ")}
+          value={_.map(data.platforms, "platform.name").join(", ")}
         />
 
         <DetailsEntry
           width={detailsEntryWidth}
           label={"Genre"}
-          value={_.map(gameDetails.genres, "name").join(", ")}
+          value={_.map(data.genres, "name").join(", ")}
         />
 
         <DetailsEntry
           width={detailsEntryWidth}
           label={"Release Date"}
-          value={moment(gameDetails.released).format("MMM DD, YYYY")}
+          value={moment(data.released).format("MMM DD, YYYY")}
         />
 
         <DetailsEntry
           width={detailsEntryWidth}
           label={"Developers"}
-          value={_.map(gameDetails.developers, "name").join(", ")}
+          value={_.map(data.developers, "name").join(", ")}
         />
 
         <DetailsEntry
           width={detailsEntryWidth}
           label={"Publishers"}
-          value={_.map(gameDetails.publishers, "name").join(", ")}
+          value={_.map(data.publishers, "name").join(", ")}
         />
       </View>
     </ScrollView>

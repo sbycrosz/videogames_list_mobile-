@@ -5,6 +5,7 @@ import useSWR from "swr";
 
 import GenericError from "../commons/GenericError";
 import GenericLoader from "../commons/GenericLoader";
+import { GameInformation } from "../types";
 import { fetcher } from "../utilities";
 import { RAWG_API_BASE_URL, RAWG_API_KEY } from "../constants";
 import GameDetailsContent from "./GameDetailsContent";
@@ -17,7 +18,7 @@ type Props = {
 export default function GameDetails(props: Props) {
   const { gameId, onDismiss } = props;
 
-  const { data, error } = useSWR(
+  const { data, error } = useSWR<GameInformation>(
     `${RAWG_API_BASE_URL}/api/games/${gameId}?key=${RAWG_API_KEY}`,
     fetcher
   );
@@ -30,7 +31,7 @@ export default function GameDetails(props: Props) {
 
       {!error && data && (
         <ScrollView>
-          <GameDetailsContent gameDetails={data} />
+          <GameDetailsContent data={data} />
         </ScrollView>
       )}
 

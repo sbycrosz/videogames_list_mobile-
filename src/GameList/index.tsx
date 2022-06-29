@@ -53,7 +53,7 @@ export default function GameList() {
       return (
         <GameCard
           name={item.name}
-          backgroundImage={item.background_image}
+          backgroundImage={item.backgroundImage}
           metacritic={item.metacritic}
           released={item.released}
           onPress={() => {
