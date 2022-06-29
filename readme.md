@@ -1,6 +1,6 @@
 # RAWG Video Game List!
 
-<img src="https://i.imgur.com/gulPIQ2.png" height="300" /><img src="https://i.imgur.com/BFnPF1j.png" height ="300" />
+<img src="https://i.imgur.com/gulPIQ2.png" height="500" /><img src="https://i.imgur.com/BFnPF1j.png" height ="500" />
 
 Browse the latest released Playstation 5 games, and view more details about said games.
 
