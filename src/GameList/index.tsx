@@ -1,7 +1,7 @@
 import { flatMap } from "lodash";
 import moment from "moment";
 import { useCallback, useMemo, useState } from "react";
-import { FlatList, SafeAreaView, Modal } from "react-native";
+import { FlatList, View, Modal } from "react-native";
 import { styles as s } from "react-native-style-tachyons";
 import useSWRInfinite from "swr/infinite";
 
@@ -67,7 +67,7 @@ export default function GameList() {
   );
 
   return (
-    <SafeAreaView style={[s.bg_background, s.flx_i]}>
+    <View style={[s.bg_background, s.flx_i]}>
       {error && <GenericError errorMessage={error.message} />}
 
       {!error && !data && <GenericLoader />}
@@ -79,6 +79,7 @@ export default function GameList() {
           renderItem={renderItem}
           onEndReached={() => setSize(size + 1)}
           ListFooterComponent={isValidating ? <LoadingView /> : null}
+          contentContainerStyle={[s.pv4]}
         />
       )}
 
@@ -96,6 +97,6 @@ export default function GameList() {
           />
         )}
       </Modal>
-    </SafeAreaView>
+    </View>
   );
 }
