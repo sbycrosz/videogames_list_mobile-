@@ -22,7 +22,7 @@ const COLORS = {
 //   textPrimary: "#131313",
 //   textSecondary: "#666666",
 //   background: "#FFFFFF",
-//   backgroundCard: "#fafafa",
+//   backgroundCard: "#FAFAFA",
 // };
 
 export const TACHYONS_CONFIG = {

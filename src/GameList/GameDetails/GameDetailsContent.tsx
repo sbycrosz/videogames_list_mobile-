@@ -11,8 +11,8 @@ import RenderHtml from "react-native-render-html";
 import { styles as s } from "react-native-style-tachyons";
 
 import DetailsEntry from "./DetailsEntry";
-import { GameInformation } from "../types";
-import { HTML_STYLES } from "../constants";
+import { GameInformation } from "../../types";
+import { HTML_STYLES } from "../../constants";
 
 type Props = {
   data: GameInformation;
@@ -27,7 +27,7 @@ export default function GameDetailsContent(props: Props) {
   if (!data) return null;
 
   return (
-    <ScrollView contentContainerStyle={[s.pb5]}>
+    <ScrollView testID="GAME_DETAILS_CONTENT" contentContainerStyle={[s.pb5]}>
       <Image
         style={[s.h5]}
         source={{

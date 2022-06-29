@@ -8,14 +8,17 @@ type Props = {
   backgroundImage: string;
   metacritic: number | null;
   onPress: () => void;
+  testID: string;
 };
 
 export default function GameCard(props: Props) {
-  const { name, released, backgroundImage, metacritic, onPress } = props;
+  const { name, released, backgroundImage, metacritic, onPress, testID } =
+    props;
 
   return (
     <TouchableOpacity onPress={onPress}>
       <View
+        testID={testID}
         style={[
           { overflow: "hidden" },
           s.mh3,

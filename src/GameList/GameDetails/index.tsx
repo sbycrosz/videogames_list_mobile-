@@ -3,11 +3,11 @@ import { View, ScrollView, TouchableOpacity } from "react-native";
 import { styles as s } from "react-native-style-tachyons";
 import useSWR from "swr";
 
-import GenericError from "../commons/GenericError";
-import GenericLoader from "../commons/GenericLoader";
-import { GameInformation } from "../types";
-import { fetcher } from "../utilities";
-import { RAWG_API_BASE_URL, RAWG_API_KEY } from "../constants";
+import GenericError from "../../commons/GenericError";
+import GenericLoader from "../../commons/GenericLoader";
+import { GameInformation } from "../../types";
+import { fetcher } from "../../utilities";
+import { RAWG_API_BASE_URL, RAWG_API_KEY } from "../../constants";
 import GameDetailsContent from "./GameDetailsContent";
 
 type Props = {
@@ -24,7 +24,10 @@ export default function GameDetails(props: Props) {
   );
 
   return (
-    <View style={[s.flx_i, s.bg_backgroundCard, { overflow: "hidden" }]}>
+    <View
+      testID="GAME_DETAILS"
+      style={[s.flx_i, s.bg_backgroundCard, { overflow: "hidden" }]}
+    >
       {error && <GenericError errorMessage={error.message} />}
 
       {!error && !data && <GenericLoader />}

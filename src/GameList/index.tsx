@@ -7,12 +7,12 @@ import useSWRInfinite from "swr/infinite";
 
 import GenericError from "../commons/GenericError";
 import GenericLoader from "../commons/GenericLoader";
-import GameDetails from "../GameDetails";
+import GenericLoadMore from "../commons/GenericLoadMore";
+import GameDetails from "./GameDetails";
 import { RAWG_API_BASE_URL, RAWG_API_KEY } from "../constants";
 import { Game } from "../types";
 import { fetcher, makeQueryString } from "../utilities";
 import GameCard from "./GameCard";
-import LoadingView from "./LoadingView";
 
 export default function GameList() {
   const PAGE_SIZE = 20;
@@ -52,6 +52,7 @@ export default function GameList() {
     ({ item }: { item: Game }) => {
       return (
         <GameCard
+          testID={`GAME_CARD-${item.id}`}
           name={item.name}
           backgroundImage={item.backgroundImage}
           metacritic={item.metacritic}
@@ -78,7 +79,7 @@ export default function GameList() {
           data={games}
           renderItem={renderItem}
           onEndReached={() => setSize(size + 1)}
-          ListFooterComponent={isValidating ? <LoadingView /> : null}
+          ListFooterComponent={isValidating ? <GenericLoadMore /> : null}
           contentContainerStyle={[s.pv4]}
         />
       )}
